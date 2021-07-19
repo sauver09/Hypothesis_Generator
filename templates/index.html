@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+<style type="text/css">
+.collapse.in { min-height: 50px;border: 1px solid blue; }
+
+    table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: center;
+
+padding: 8px;
+}
+
+tr:nth-child(even) {
+background-color: #dddddd;
+}
+</style>
+
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Hypothesis Testing</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="../static/dist/css/styles.css" rel="stylesheet" />
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+      
+        
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <br><br>
+                       <center> <h1 style="margin-left: 40px;">Hypothesis Testing</h1> </center><br>
+                        
+                        <div class="row">
+
+                            <div style="margin-left: 40%">
+
+
+                           <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="POST" action="test">
+                
+  
+
+                   <!--  <select class="form-control" id="stateId" name="stateName">
+                        <option selected="selected" value="0">Select State</option>
+                        <option value="1">State1</option>
+                       <option value="2">State2</option>
+                    </select> -->
+
+
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="submit" data-target="#mainmain" style="width:300px;height: 100px;">Generate Inferences</button>
+                </div>
+            </form>
+
+            <br>
+<br>
+
+            </div>
+
+                <div id="mainmain"> 
+                    {% if flag is defined %}
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                               
+                            </div>
+                            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">View Complete Data</button>
+                            
+                            <div class="collapse"  id="demo" >
+                                   
+                                    {% for table in tables %}
+                                        
+                                        {{ table|safe }}
+                                         {% endfor %}
+                       
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                                    <div class="container" id="myGroup">
+
+                                    <button  type="button" class="btn btn-primary" style="margin-left: 100px;" data-toggle="collapse" data-target="#dataCleaning" aria-expanded="true" aria-controls="#dataCleaning" data-parent="#myGroup" >Data Cleaning</button>
+                                     <button aria-expanded="false" type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#OneSampleTestforStateWIconfirmed" data-parent="#myGroup">One Sample Test </button>
+                                     <button aria-expanded="false" type="button" class="btn btn-success" data-toggle="collapse" data-target="#TwoPopulationTestforStateWIconfirmed" data-parent="#myGroup">Two Population Test </button>
+                                     <button aria-expanded="false" type="button" class="btn btn-warning" data-toggle="collapse" data-target="#OneSampleKSTest" data-parent="#myGroup">One Sample KS Test </button>
+                                     <button aria-expanded="false" type="button" class="btn btn-info" data-toggle="collapse" data-target="#TwoSampleKSTest" data-parent="#myGroup">Two Population KS Test </button>
+                                     <button aria-expanded="false" type="button" class="btn btn-dark" data-toggle="collapse" data-target="#PermutationList" data-parent="#myGroup">Permutation Test </button>
+                                    
+                                    
+                            <div class="accordion-group">
+
+
+                            <div   class="collapse indent" id="dataCleaning" aria-expanded="false" aria-controls="#dataCleaning" >
+                                    
+                                          <ol>
+                                            <li>We first checked if there is any Null values in the entire dataset and we observed that the given data did not had any NULL values.</li>
+                                            <li>We plotted the original data and observed that the there were instances when cumilative data had inappropriate values( i.e, the value at a particular place was smaller than the previous rows). For this, we modified the inappropriate values with the values present at the previous row in the dataset to make the cumilative data proper. We again plotted the data to make sure if the cumilative data was proper.</li>
+                                            <li>Now, we converted the cumilative data to instantaneous data(daily data) for all the states data. We also plotted the data to make sure if cumilative data is converted to daily data.</li>
+                                            <li>We then applied Tukey Rule for Outlier detection. We also made sure that the outliers did not corresponds to the zero values.
+        We got several outliers for each column, So we took the union of outliers indexes and then removed those rows from the original data.  
+        </li>
+                                          
+        </ol>
+                                   
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Original plots
+                                        
+                                        <img src={{ originalPlot1 }} alt="Chart" style="height:auto;width: auto">
+                                        <img src={{ originalPlot2 }} alt="Chart" style="height:auto;width: auto">
+                                        <!-- <img src="data:image/png;base64,{{ plot_url }}" height="420" width="420"> -->
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                             <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Data after handling negative cumilative data
+                                        
+                                        <img src={{ HandNegCumPlot1 }} alt="Chart" style="height:auto;width: auto">
+                                        <img src={{ HandNegCumPlot1 }} alt="Chart" style="height:auto;width: auto">
+                                        <!-- <img src="data:image/png;base64,{{ plot_url }}" height="420" width="420"> -->
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Data after converting cumilative data to instantaneous data(daily data)
+                                        
+                                        <img src={{ InstPlot1 }} alt="Chart" style="height:auto;width: auto">
+                                        <img src={{ InstPlot2 }} alt="Chart" style="height:auto;width: auto">
+                                        <!-- <img src="data:image/png;base64,{{ plot_url }}" height="420" width="420"> -->
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                             <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>Data after removing outliers
+                                        
+                                        <img src={{ outlierRemoved2 }} alt="Chart" style="height:auto;width: auto">
+                                        <img src={{ outlierRemoved2 }} alt="Chart" style="height:auto;width: auto">
+                                        <!-- <img src="data:image/png;base64,{{ plot_url }}" height="420" width="420"> -->
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        </div>
+                    
+
+
+
+
+
+                    <div class="container" >
+                    <div class="row">
+                        
+                                       
+                   <div   id="OneSampleTestforStateWIconfirmed" class="collapse indent">
+                                    
+                                    {% for post in OneSampleTestforStateWIconfirmed %}
+                           <p>{{''.join(post)}}</p>
+                               {% endfor %}
+                       
+                    </div>
+                        </div>
+                        </div>
+
+
+                         <div class="container">
+                    <div class="row">
+                        
+                                       
+                   <div   id="TwoPopulationTestforStateWIconfirmed" class="collapse indent" >
+                                    
+                                    {% for post in TwoPopulationTestforStateWIconfirmed %}
+                           <p>{{''.join(post)}}</p>
+                               {% endfor %}
+                       
+                    </div>
+                        </div>
+                        </div>
+
+
+
+                         <div class="container">
+                    <div class="row">
+                        
+                                       
+                   <div   id="OneSampleKSTest" class="collapse indent">
+                                    
+                                    {% for post in OneSampleKSTest %}
+                           <p>{{''.join(post)}}</p>
+                               {% endfor %}
+
+
+                               {% for table in df_oneSampleKSTest %}
+                                        
+                                        {{ table|safe }}
+                                         {% endfor %}
+                       
+                    </div>
+                        </div>
+                        </div>
+
+
+
+
+
+                         <div class="container">
+                    <div class="row">
+                        
+                                       
+                   <div   id="TwoSampleKSTest" class="collapse indent">
+                                    
+                                    {% for post in TwoSampleKSTest %}
+                           <p>{{''.join(post)}}</p>
+                               {% endfor %}
+
+
+                               {% for table in df_TwoSampleKSTest %}
+                                        
+                                        {{ table|safe }}
+                                         {% endfor %}
+                       
+                    </div>
+                        </div>
+                        </div>
+
+
+
+
+                        <div class="container">
+                    <div class="row">
+                        
+                                       
+                   <div   id="PermutationList" class="collapse ">
+                                    
+                                    {% for post in PermutationList %}
+                           <p>{{''.join(post)}}</p>
+                               {% endfor %}
+
+
+                               {% for table in df_PermutationList %}
+                                        
+                                        {{ table|safe }}
+                                         {% endfor %}
+                       
+                    </div>
+                        </div>
+                        </div>
+                         <img src='../static/images/click.png' width="1100px" height="450px">
+                    {% else %}
+                   
+                     <img src='../static/images/hh1.png' width="1500px" height="550px">
+                    {% endif %}
+                    
+                                 
+
+              
+        </div>
+    </div>
+                        
+                </main>
+               
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../static/dist/js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="../static/dist/assets/demo/chart-area-demo.js"></script>
+        <script src="../static/dist/assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="../static/dist/js/datatables-simple-demo.js"></script>
+    </body>
+</html>
